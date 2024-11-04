@@ -3,6 +3,7 @@ import { BackendService,Libro } from '../../servicios/backend.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-libros-list',
   standalone: true,
