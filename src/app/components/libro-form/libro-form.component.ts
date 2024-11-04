@@ -26,7 +26,7 @@ export class LibroFormComponent implements OnInit {
         this.libroForm = this.fb.group({
             titulo: ['', Validators.required],
             autor: ['', Validators.required],
-            añoPublicacion: ['', [Validators.required, Validators.min(1000), Validators.max(9999)]],
+            anioPublicacion: ['', [Validators.required, Validators.min(1000), Validators.max(9999)]],
             genero: ['', Validators.required]
         });
     }

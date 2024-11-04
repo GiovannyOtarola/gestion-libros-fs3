@@ -33,16 +33,16 @@
 
     <div class="form-floating mb-3">
         <input 
-            id="añoPublicacion" 
-            formControlName="añoPublicacion" 
+            id="anioPublicacion" 
+            formControlName="anioPublicacion" 
             type="number" 
             class="form-control" 
-            [ngClass]="{'is-invalid': libroForm.get('añoPublicacion')?.invalid && libroForm.get('añoPublicacion')?.touched}"
+            [ngClass]="{'is-invalid': libroForm.get('anioPublicacion')?.invalid && libroForm.get('anioPublicacion')?.touched}"
             placeholder="Año de Publicación"
             required
         >
         <label for="añoPublicacion">Año de Publicación</label>
-        <div *ngIf="libroForm.get('añoPublicacion')?.invalid && libroForm.get('añoPublicacion')?.touched" class="invalid-feedback">
+        <div *ngIf="libroForm.get('anioPublicacion')?.invalid && libroForm.get('anioPublicacion')?.touched" class="invalid-feedback">
             {{ getErrorMessage('añoPublicacion') }}
         </div>
     </div>
