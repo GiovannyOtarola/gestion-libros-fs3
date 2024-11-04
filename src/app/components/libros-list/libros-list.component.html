@@ -10,8 +10,8 @@
                 <strong>{{ libro.titulo }}</strong> - {{ libro.autor }}
             </div>
             <div>
-                <button (click)="libro.id !== undefined ? editarLibro(libro.id) : null" class="btn btn-warning btn-sm me-2">Editar</button>
-                <button (click)="libro.id !== null ? eliminarLibro(libro.id) : null" class="btn btn-danger btn-sm">Eliminar</button>
+                <button (click)="editarLibro(libro.id!)" class="btn btn-warning btn-sm me-2">Editar</button>
+                <button (click)="eliminarLibro(libro.id!)" class="btn btn-danger btn-sm">Eliminar</button>
             </div>
         </li>
     </ul>

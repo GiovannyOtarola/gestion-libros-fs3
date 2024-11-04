@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class LibroFormComponent implements OnInit {
     libroForm: FormGroup;
-    libroId: string | null = null;
+    libroId: number = 0;
     isEditMode = false; // Variable para verificar si estamos en modo edición
     errorMessage: string | null = null;
 
@@ -32,63 +32,55 @@ export class LibroFormComponent implements OnInit {
     }
 
     ngOnInit(): void {
-      // Verificar si estamos en modo edición
-      this.libroId = this.route.snapshot.paramMap.get('id');
-      this.isEditMode = !!this.libroId;
-  
-      if (this.isEditMode) {
-          // Convertir libroId a number
-          const id = Number(this.libroId);
-          
-          // Cargar datos del libro para edición
-          this.backendService.getLibro(id).subscribe({
-              next: (libro) => this.libroForm.patchValue(libro),
-              error: (err) => {
-                  console.error('Error al cargar libro para edición:', err);
-                  this.errorMessage = 'Error al cargar el libro. Intente nuevamente.';
-              }
-          });
-      }
-  }
-
-  onSubmit(): void {
-    if (this.libroForm.valid) {
-        const libro: Libro = this.libroForm.value;
-        this.errorMessage = null; 
-        
-        // Convertir libroId a número si estamos en modo edición
-        const id = this.isEditMode && this.libroId ? Number(this.libroId) : null;
-
-        if (this.isEditMode && id !== null) {
-            // Modo edición
-            this.backendService.updateLibro(id, libro).subscribe({
-                next: () => {
-                    alert('Libro actualizado con éxito');
-                    this.router.navigate(['/libros']);
-                },
+        const id = this.route.snapshot.paramMap.get('id');
+        this.libroId = id ? Number(id) : 0; // Asignación como número, 0 si no se encuentra
+        this.isEditMode = this.libroId > 0; // Verifica si es modo edición basado en si libroId es positivo
+    
+        if (this.isEditMode) {
+            // Cargar datos del libro para edición
+            this.backendService.getLibro(this.libroId).subscribe({
+                next: (libro) => this.libroForm.patchValue(libro),
                 error: (err) => {
-                    console.error('Error al actualizar el libro:', err);
-                    this.errorMessage = 'No se pudo actualizar el libro. Intente nuevamente.';
-                }
-            });
-        } else {
-            // Modo agregar
-            this.backendService.addLibro(libro).subscribe({
-                next: () => {
-                    alert('Libro agregado con éxito');
-                    this.router.navigate(['/libros']);
-                },
-                error: (err) => {
-                    console.error('Error al agregar el libro:', err);
-                    this.errorMessage = 'No se pudo agregar el libro. Intente nuevamente.';
+                    console.error('Error al cargar libro para edición:', err);
+                    this.errorMessage = 'Error al cargar el libro. Intente nuevamente.';
                 }
             });
         }
-    } else {
-        this.errorMessage = 'Por favor, complete todos los campos requeridos.';
     }
-}
-    cancelar(): void {
+
+    onSubmit(): void {
+        if (this.libroForm.valid) {
+            const libro: Libro = this.libroForm.value;
+            this.errorMessage = null;
+    
+            if (this.isEditMode) {
+                this.backendService.updateLibro(this.libroId, libro).subscribe({
+                    next: () => {
+                        alert('Libro actualizado con éxito');
+                        this.router.navigate(['/libros']);
+                    },
+                    error: (err) => {
+                        console.error('Error al actualizar el libro:', err);
+                        this.errorMessage = 'No se pudo actualizar el libro. Intente nuevamente.';
+                    }
+                });
+            } else {
+                this.backendService.addLibro(libro).subscribe({
+                    next: () => {
+                        alert('Libro agregado con éxito');
+                        this.router.navigate(['/libros']);
+                    },
+                    error: (err) => {
+                        console.error('Error al agregar el libro:', err);
+                        this.errorMessage = 'No se pudo agregar el libro. Intente nuevamente.';
+                    }
+                });
+            }
+        } else {
+            this.errorMessage = 'Por favor, complete todos los campos requeridos.';
+        }
+    }
+     cancelar(): void {
         this.router.navigate(['/libros']); // Redirige a la lista de libros
     }
     // Método para mostrar los mensajes de error
