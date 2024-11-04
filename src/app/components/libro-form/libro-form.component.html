@@ -1,0 +1,41 @@
+<form [formGroup]="libroForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    
+    <div class="form-group">
+        <label for="titulo">Título</label>
+        <input id="titulo" formControlName="titulo" class="form-control">
+        <small *ngIf="libroForm.get('titulo')?.invalid && libroForm.get('titulo')?.touched" class="text-danger">
+            {{ getErrorMessage('titulo') }}
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="autor">Autor</label>
+        <input id="autor" formControlName="autor" class="form-control">
+        <small *ngIf="libroForm.get('autor')?.invalid && libroForm.get('autor')?.touched" class="text-danger">
+            {{ getErrorMessage('autor') }}
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="añoPublicacion">Año de Publicación</label>
+        <input id="añoPublicacion" formControlName="añoPublicacion" type="number" class="form-control">
+        <small *ngIf="libroForm.get('añoPublicacion')?.invalid && libroForm.get('añoPublicacion')?.touched" class="text-danger">
+            {{ getErrorMessage('añoPublicacion') }}
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="genero">Género</label>
+        <input id="genero" formControlName="genero" class="form-control">
+        <small *ngIf="libroForm.get('genero')?.invalid && libroForm.get('genero')?.touched" class="text-danger">
+            {{ getErrorMessage('genero') }}
+        </small>
+    </div>
+
+    <div class="d-flex justify-content-between mt-3">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <!-- Botón de Cancelar -->
+        <button type="button" (click)="cancelar()" class="btn btn-secondary">Cancelar</button>
+    </div>
+</form>
